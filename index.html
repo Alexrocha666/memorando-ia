@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Memorandos</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; }
+        input, textarea { width: 100%; margin-bottom: 10px; padding: 8px; }
+        button { background-color: blue; color: white; padding: 10px; border: none; cursor: pointer; }
+    </style>
+    <script>
+        async function gerarMemorando() {
+            const destinatario = document.getElementById("destinatario").value;
+            const assunto = document.getElementById("assunto").value;
+            const detalhes = document.getElementById("detalhes").value;
+
+            const resposta = await fetch("https://memorandos-api.onrender.com/gerar", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ destinatario, assunto, detalhes })
+            });
+
+            const data = await resposta.json();
+            document.getElementById("resultado").innerText = data.memorando;
+        }
+    </script>
+</head>
+<body>
+    <h2>Gerador de Memorandos</h2>
+    <label>Destinatário:</label>
+    <input type="text" id="destinatario"><br>
+    <label>Assunto:</label>
+    <input type="text" id="assunto"><br>
+    <label>Detalhes:</label>
+    <textarea id="detalhes"></textarea><br>
+    <button onclick="gerarMemorando()">Gerar Memorando</button>
+    <h3>Resultado:</h3>
+    <pre id="resultado"></pre>
+</body>
+</html>
