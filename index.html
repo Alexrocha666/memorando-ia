@@ -1,41 +1,93 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerador de Memorandos</title>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; }
-        input, textarea { width: 100%; margin-bottom: 10px; padding: 8px; }
-        button { background-color: blue; color: white; padding: 10px; border: none; cursor: pointer; }
-    </style>
     <script>
-        async function gerarMemorando() {
-            const destinatario = document.getElementById("destinatario").value;
-            const assunto = document.getElementById("assunto").value;
-            const detalhes = document.getElementById("detalhes").value;
-
-            const resposta = await fetch("https://memorandos-api.onrender.com/gerar", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ destinatario, assunto, detalhes })
+        function gerarMemorando() {
+            var destinatario = document.getElementById("destinatario").value;
+            var assunto = document.getElementById("assunto").value;
+            
+            fetch('http://127.0.0.1:10000/gerar', { // ou use o seu IP se acessando remotamente
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    destinatario: destinatario,
+                    assunto: assunto
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("memorando").innerText = data.memorando;
+            })
+            .catch(error => {
+                console.error('Erro:', error);
             });
-
-            const data = await resposta.json();
-            document.getElementById("resultado").innerText = data.memorando;
         }
     </script>
 </head>
 <body>
-    <h2>Gerador de Memorandos</h2>
-    <label>Destinatário:</label>
-    <input type="text" id="destinatario"><br>
-    <label>Assunto:</label>
-    <input type="text" id="assunto"><br>
-    <label>Detalhes:</label>
-    <textarea id="detalhes"></textarea><br>
-    <button onclick="gerarMemorando()">Gerar Memorando</button>
-    <h3>Resultado:</h3>
-    <pre id="resultado"></pre>
+    <h1>Gerador de Memorando</h1>
+    <form onsubmit="event.preventDefault(); gerarMemorando();">
+        <label for="destinatario">Destinatário:</label><br>
+        <input type="text" id="destinatario" required><br><br>
+
+        <label for="assunto">Assunto:</label><br>
+        <input type="text" id="assunto" required><br><br>
+
+        <button type="submit">Gerar Memorando</button>
+    </form>
+
+    <h2>Memorando Gerado:</h2>
+    <pre id="memorando"></pre>
+</body>
+</html><!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Memorandos</title>
+    <script>
+        function gerarMemorando() {
+            var destinatario = document.getElementById("destinatario").value;
+            var assunto = document.getElementById("assunto").value;
+            
+            fetch('http://127.0.0.1:10000/gerar', { // ou use o seu IP se acessando remotamente
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    destinatario: destinatario,
+                    assunto: assunto
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("memorando").innerText = data.memorando;
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Gerador de Memorando</h1>
+    <form onsubmit="event.preventDefault(); gerarMemorando();">
+        <label for="destinatario">Destinatário:</label><br>
+        <input type="text" id="destinatario" required><br><br>
+
+        <label for="assunto">Assunto:</label><br>
+        <input type="text" id="assunto" required><br><br>
+
+        <button type="submit">Gerar Memorando</button>
+    </form>
+
+    <h2>Memorando Gerado:</h2>
+    <pre id="memorando"></pre>
 </body>
 </html>
